@@ -9,12 +9,7 @@ Cтрока короче 20 символов:
 имяФункции('проверяемая строка', 10);  false
 */
 
-const findLessOrMore = (string, stringLength) => {
-  if (string.length <= stringLength) {
-    return true;
-  }
-  return false;
-};
+const findLessOrMore = (string, stringLength) => string.length <= stringLength;
 
 findLessOrMore('проверяемая строка', 20);
 findLessOrMore('проверяемая строка', 18);
@@ -66,16 +61,19 @@ recognizePalindrom('Лёша на полке клопа нашёл ');
 имяФункции(1.5);  // 15
 */
 
-const extractNumber = (string) => {
-  if (typeof string === 'number') {
-    return string;
+const extractNumber = (value) => {
+  if (typeof value === 'number') {
+    return Math.abs(value);
   }
+
   let result = '';
-  for (let i = 0; i < string.length; i++) {
-    if (!Number.isNaN(parseInt(string.at(i), 10))) {
-      result += string.at(i);
+
+  for (let i = 0; i < value.length; i++) {
+    if (!Number.isNaN(parseInt(value.at(i), 10))) {
+      result += value.at(i);
     }
   }
+
   return parseInt(result, 10);
 };
 
@@ -106,7 +104,7 @@ const myPadStart = (string, minLength, pad) => {
   if (actualPad <= 0) {
     return string;
   }
-  return pad.slice(0, actualPad % pad.length) + pad.repeat(actualPad / pad.length) + string;
+  return `${pad.slice(0, actualPad % pad.length)}${pad.repeat(actualPad / pad.length)}${string}`;
 };
 
 myPadStart('1', 2, '0');
