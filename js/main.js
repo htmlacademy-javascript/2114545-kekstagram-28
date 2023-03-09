@@ -1,8 +1,8 @@
-const PICTURES_ID = 25;
+const MAX_PICTURES_COUNT = 25;
 const LIKES_MIN = 15;
 const LIKES_MAX = 200;
 const AVATAR = 6;
-const COMMENTS_ID = 20;
+const MAX_COMMENTS_COUNT = 20;
 
 const COMMENTS = [
   'Всё отлично!',
@@ -26,14 +26,7 @@ const DESCRIPTIONS = [
   'На 90% состою из важных дел',
 ];
 
-/*функция для получения случайного целочисленное число из диапазона.
-(a, b) - диапазон возможных индексов массива.
-Math.ceil - округляет до ближайшего большего целого.
-Math.min - возвращает наименьшее из нуля или более чисел.
-Math.max() возвращает наибольшее из нуля или более чисел.
-Math.floor() - округляет аргумент до ближайшего меньшего целого
-Math.random() возвращает псевдослучайное число с плавающей запятой из диапазона [0, 1).
-*/
+/*функция, которая возвращает рандомное число в заданном диапазоне*/
 const getRandomInteger = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
@@ -45,9 +38,7 @@ const getRandomInteger = (a, b) => {
  ВСЕ возможные элементы, а она нам случайные. Ограничиваем диапазон длиной массива*/
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-/*функция-генератор из демонстрации 4.12.
-функция для генерации значений, созданная в результате работы другой функции.
-*/
+/*генерирует номер id (от 0 до 25)*/
 const createIdGenerator = () => {
   let lastGeneratedId = 0;
 
@@ -59,8 +50,9 @@ const createIdGenerator = () => {
 
 const generateCommentId = createIdGenerator();
 
-/*получаем массив и с помощью join склеиваем элементы в строку*/
-const createMessage = () =>
+/*получаем массив (несколько предложений из comments) и
+с помощью join склеиваем элементы в строку*/
+const createCommentText = () =>
   Array.from({ length: getRandomInteger(1, 2) }, () =>
     getRandomArrayElement(COMMENTS)
   ).join(' ');
@@ -68,18 +60,18 @@ const createMessage = () =>
 const createComment = () => ({
   id: generateCommentId(),
   avatar: `img/avatar-${getRandomInteger(1, AVATAR)}.svg`,
-  message: createMessage(),
+  message: createCommentText(),
   name: getRandomArrayElement(NAMES),
 });
 
 /*Функция, которая возвращает нам объект */
-const createPicture = (index) => ({
+const createFeedItem = (index) => ({
   id: index,
   url: `photos/${index}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
   likes: getRandomInteger(LIKES_MIN, LIKES_MAX),
   comments: Array.from(
-    { length: getRandomInteger(0, COMMENTS_ID) },
+    { length: getRandomInteger(0, MAX_COMMENTS_COUNT) },
     createComment
   ),
 });
@@ -87,9 +79,24 @@ const createPicture = (index) => ({
 /*функция, которая возвращает массив картинок определенной длины
 во второй параментр мы передаем колбэк функцию, которая будет вызвана
 для каждого элемента массива. Берётся элемент, и к нему применяется функция createPicture*/
-const getPictures = () =>
-  Array.from({ length: PICTURES_ID}, (_, pictureIndex) =>
-    createPicture(pictureIndex + 1)
+const getFeed = () =>
+  Array.from({ length: MAX_PICTURES_COUNT }, (_, itemIndex) =>
+    createFeedItem(itemIndex + 1)
   );
 
-getPictures();
+getFeed();
+
+/* ИЛИ:
+const getArray = (counter) => {
+  const result = [];
+
+  for (let i = 0; i < counter; i += 1) {
+    result.push(createFeedItem(i));
+  }
+  return result;
+};
+
+console.log(getArray(MAX_PICTURES_COUNT));
+*/
+
+
