@@ -26,7 +26,6 @@ const DESCRIPTIONS = [
   'На 90% состою из важных дел',
 ];
 
-/*функция, которая возвращает рандомное число в заданном диапазоне*/
 const getRandomInteger = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
@@ -34,11 +33,8 @@ const getRandomInteger = (a, b) => {
   return Math.floor(result);
 };
 
-/*функция, которая возвращает случайный элемент массива. Мы ей передаем
- ВСЕ возможные элементы, а она нам случайные. Ограничиваем диапазон длиной массива*/
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-/*генерирует номер id (от 0 до 25)*/
 const createIdGenerator = () => {
   let lastGeneratedId = 0;
 
@@ -50,8 +46,6 @@ const createIdGenerator = () => {
 
 const generateCommentId = createIdGenerator();
 
-/*получаем массив (несколько предложений из comments) и
-с помощью join склеиваем элементы в строку*/
 const createCommentText = () =>
   Array.from({ length: getRandomInteger(1, 2) }, () =>
     getRandomArrayElement(COMMENTS)
@@ -64,7 +58,6 @@ const createComment = () => ({
   name: getRandomArrayElement(NAMES),
 });
 
-/*Функция, которая возвращает нам объект */
 const createFeedItem = (index) => ({
   id: index,
   url: `photos/${index}.jpg`,
@@ -76,27 +69,9 @@ const createFeedItem = (index) => ({
   ),
 });
 
-/*функция, которая возвращает массив картинок определенной длины
-во второй параментр мы передаем колбэк функцию, которая будет вызвана
-для каждого элемента массива. Берётся элемент, и к нему применяется функция createPicture*/
 const getFeed = () =>
   Array.from({ length: MAX_PICTURES_COUNT }, (_, itemIndex) =>
     createFeedItem(itemIndex + 1)
   );
 
 getFeed();
-
-/* ИЛИ:
-const getArray = (counter) => {
-  const result = [];
-
-  for (let i = 0; i < counter; i += 1) {
-    result.push(createFeedItem(i));
-  }
-  return result;
-};
-
-console.log(getArray(MAX_PICTURES_COUNT));
-*/
-
-
